@@ -22,8 +22,21 @@ public class TestSort {
    	 //ComparisonSort.insertionSort(testArray);
    	 //ComparisonSort.mergeSort(testArray);
    	 //ComparisonSort.quickSort(testArray);
-
+   	 //ComparisonSort.heapSort(testArray);
+   	 //ComparisonSort.selection2Sort(testArray);
    	 
+   	 /*
+   	 //test my implementation of priority queue
+   	 MyPriorityQueue<Integer> testQueue = new MyPriorityQueue<>();
+   	 for(int i = 0; i < testArray.length; i++) {
+   		 testQueue.insert(testArray[i]);
+   	 }
+   	 while(!testQueue.isEmpty()) {
+   		 System.out.println(testQueue.removeMax());
+   	 }
+   	 */
+
+   	
         if (args.length != 2) {
             System.err.println("Expected 2 but got " + args.length);
             System.err.println("Arguments expected:");
@@ -48,6 +61,6 @@ public class TestSort {
 
         // Run all the sorts on the array of random integers.
         ComparisonSort.runAllSorts(arr);
-        
+      
     }
 }

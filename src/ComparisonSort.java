@@ -32,18 +32,18 @@ public class ComparisonSort {
      * @param <E>  the type of values to be sorted
      * @param A    the array to sort
      */
+	 public static int testmoves = 0; //keep track of moves;
+	
     public static <E extends Comparable<E>> void selectionSort(E[] A) {
 //System.out.println(Arrays.toString(A));
    	 SortObject.resetCompares();
    	 long startTime = System.currentTimeMillis();
-   	 int moves = 0;
+   	 testmoves = 0;
         for (int i = 0; i < A.length - 1; i++) {
       	  for (int k = i + 1; k < A.length; k++) {
       		  if (A[i].compareTo(A[k]) > 0) {
+      			  
       			  swap(A, i, k);
-      			  moves++;
-      			  moves++;
-      			  moves++;
       		  }
       	  }
         }
@@ -51,7 +51,7 @@ public class ComparisonSort {
         long timelapsed = endTime - startTime;
 //System.out.println(Arrays.toString(A));
         
-        print("selection", SortObject.getCompares(), moves, timelapsed);
+        printStatistics("selection", SortObject.getCompares(), testmoves, timelapsed);
     }
 
     /**
@@ -65,25 +65,25 @@ public class ComparisonSort {
 //System.out.println(Arrays.toString(A));
    	 SortObject.resetCompares();
    	 long startTime = System.currentTimeMillis();
-   	 int moves = 0;
+   	 testmoves = 0;
    	 
         for (int i = 1; i < A.length; i++) {
       	  int k = i - 1; 
       	  E temp = A[i];
-      	  moves++;
+      	  testmoves++;
       	  while((k >= 0) && (A[k].compareTo(temp) > 0)) {
       		  A[k + 1] = A[k];
       		  k--;
-      		  moves++;
+      		  testmoves++;
       	  }
       	  A[k + 1] = temp;
-      	  moves++;
+      	  testmoves++;
         }
         long endTime = System.currentTimeMillis();
         long timelapsed = endTime - startTime;
 //System.out.println(Arrays.toString(A));
         if(A.length > 1000) {
-        print("insertion", SortObject.getCompares(), moves, timelapsed);
+        printStatistics("insertion", SortObject.getCompares(), testmoves, timelapsed);
         }
     }
 
@@ -98,31 +98,31 @@ public class ComparisonSort {
    	 
    	 SortObject.resetCompares();
    	 long startTime = System.currentTimeMillis();
-   	 int moves = 0;
+   	 testmoves = 0;
    	 
 //System.out.println(Arrays.toString(A));
-        moves = mergeSortAux(A, 0, A.length - 1, moves);
+        mergeSortAux(A, 0, A.length - 1);
 //System.out.println(Arrays.toString(A));
         
         long endTime = System.currentTimeMillis();
         long timelapsed = endTime - startTime;
 
         
-        print("merge", SortObject.getCompares(), moves, timelapsed);
+        printStatistics("merge", SortObject.getCompares(), testmoves, timelapsed);
         
     }
     
     //why void methods has type parameter
-    private static <E extends Comparable<E>>  int mergeSortAux(E[] A, int low, int high, int totalMoves) {
-   	 int newMoves = 0;
+    private static <E extends Comparable<E>>  void mergeSortAux(E[] A, int low, int high) {
+   	 
    	 if(low == high) {
-   		 return totalMoves;
+   		 return ;
    	 }
    	 
    	 int mid = (low + high) / 2;
    	 
-   	 totalMoves = mergeSortAux(A, low, mid, totalMoves);
-   	 totalMoves = mergeSortAux(A, mid + 1, high, totalMoves);
+   	 mergeSortAux(A, low, mid );
+   	 mergeSortAux(A, mid + 1, high);
    	 
    	 E[] temp = (E[]) (new Comparable[high - low + 1]);
    	 int left = low;
@@ -134,12 +134,12 @@ public class ComparisonSort {
    			 temp[pos] = A[left];
    			 left++;
    			 pos++;
-   			 newMoves++;
+   			 testmoves++;
    		 } else {
    			 temp[pos] = A[right];
    			 right++;
    			 pos++;
-   			 newMoves++;
+   			 testmoves++;
    		 }
    	 }
    	 
@@ -147,19 +147,19 @@ public class ComparisonSort {
    		 temp[pos] = A[left];
    		 pos++;
    		 left++;
-   		 newMoves++;
+   		 testmoves++;
    	 }
    	 while(right <= high) {
 //System.out.println("temp size: " + temp.length + " pos: " + pos + " left: " + left + " right: " + right );
    		 temp[pos] = A[right];
    		 pos++;
    		 right++;
-   		 newMoves++;
+   		 testmoves++;
    	 }
    	 
    	 System.arraycopy(temp, 0, A, low, temp.length);
-   	 newMoves = newMoves + temp.length;
-   	 return totalMoves + newMoves;
+   	 testmoves += temp.length;
+   	 return ;
     }
 
     /**
@@ -175,20 +175,20 @@ public class ComparisonSort {
  //System.out.println(Arrays.toString(A));
 		 SortObject.resetCompares();
 		 long startTime = System.currentTimeMillis();
-		 int moves = 0;
-   	 moves = quickSortAux(A, 0, A.length - 1, 0);
+		 testmoves = 0;
+   	 quickSortAux(A, 0, A.length - 1);
    	 long endTime = System.currentTimeMillis();
        long timelapsed = endTime - startTime;
 
        
-       print("quicksort", SortObject.getCompares(), moves, timelapsed);
+       printStatistics("quick", SortObject.getCompares(), testmoves, timelapsed);
  //System.out.println(Arrays.toString(A));
     }
     
-    private static <E extends Comparable<E>> int[] partition(E[] A, int low, int high) {
-   	 int moves = 0;
+    private static <E extends Comparable<E>> int partition(E[] A, int low, int high) {
+   	 
    	 E pivot = medianOfThree(A, low, high); //how to get moves?
-   	 moves++;//rough estimate, 1 assignment
+   	 
    	 int left = low + 1;
    	 int right = high - 2;
    	 while(left <= right) {
@@ -200,29 +200,29 @@ public class ComparisonSort {
    		 }
    		 if(left<=right) {
    			 swap(A, left, right);
-   			 moves = moves + 3;
+   			 
    			 left++;
    			 right--;
    		 }
    	 }
    	 swap(A, right + 1, high - 1);
-   	 moves = moves + 3;
-   	 return new int[] {right, moves}; 
+   	 
+   	 return right; 
     }
     
-    private static <E extends Comparable<E>> int quickSortAux(E[] A, int low, int high, int totalMoves) {
+    private static <E extends Comparable<E>> void quickSortAux(E[] A, int low, int high) {
  //System.out.println("A size: " + A.length + " low: " + low + " high: " + high);
    	 if(high - low < 4) {
    		 insertionSort(A, low, high);
  //System.out.println("called, A size: " + A.length);
-   		 return totalMoves;
+   		 return;
    	 } else {
-   		 int [] temp = partition(A, low, high);
-   		 int right = temp[0];
-   		 int newMoves = temp[1];
-   		 totalMoves = quickSortAux(A, low, right, totalMoves);
-   		 totalMoves = quickSortAux(A, right + 2, high, totalMoves);
-   		 return totalMoves + newMoves;
+   		 
+   		 
+   		 int right = partition(A, low, high);
+   		 quickSortAux(A, low, right );
+   		 quickSortAux(A, right + 2, high);
+   		 
    	 }
    	 
     }
@@ -234,10 +234,10 @@ public class ComparisonSort {
      	  while((k >= low) && (A[k].compareTo(temp) > 0)) {
      		  A[k + 1] = A[k];
      		  k--;
-     		  
+     		  testmoves++;
      	  }
      	  A[k + 1] = temp;
-     	  
+     	  testmoves++;
        }
     }
     
@@ -245,12 +245,15 @@ public class ComparisonSort {
    	 int median = (low + high) / 2;
    	 if(A[low].compareTo(A[high]) > 0) {
    		 swap(A, low, high);
+   		 
    	 }
    	 if(A[median].compareTo(A[low]) < 0) {
    		 swap(A, low, median);
+   		 
    	 }
    	 if(A[median].compareTo(A[high]) > 0) {
    		 swap(A, median, high);
+   		 
    	 }
    	 
    	 return A[median];
@@ -276,13 +279,27 @@ public class ComparisonSort {
      * @param A    the array to sort
      */
     public static <E extends Comparable<E>> void heapSort(E[] A) {
-        PriorityQueue<E> temp = new PriorityQueue<>();
+   	 
+   	 SortObject.resetCompares();
+		 long startTime = System.currentTimeMillis();
+		 testmoves = 0;
+//System.out.println("unsorted: " + Arrays.toString(A));
+        MyPriorityQueue<E> temp = new MyPriorityQueue<>(5000);
         for(int i = 0; i < A.length; i++) {
-      	  temp.add(A[i]);
+      	  temp.insert(A[i]);
+      	  
         }
-        for(int k = 0; k < temp.size(); k++) {
-      	  A[k] = temp.remove();
+        for(int k = A.length - 1; k >= 0; k--) {
+      	  A[k] = temp.removeMax();
+      	  
         }
+        long endTime = System.currentTimeMillis();
+        long timelapsed = endTime - startTime;
+
+        
+        printStatistics("heap", SortObject.getCompares(), testmoves, timelapsed);
+        
+//System.out.println("sorted: " + Arrays.toString(A));
     }
 
     /**
@@ -326,6 +343,12 @@ public class ComparisonSort {
      * @param A    the array to sort
      */
     public static <E extends Comparable<E>> void selection2Sort(E[] A) {
+// System.out.println("unsorted: " + Arrays.toString(A));
+   	 
+   	 SortObject.resetCompares();
+		 long startTime = System.currentTimeMillis();
+		 testmoves = 0;
+		 
    	 int begin = 0;
    	 int end = A.length - 1;
        while(begin <= end) {
@@ -356,6 +379,12 @@ public class ComparisonSort {
       	 begin++;
       	 end--;
       }
+// System.out.println("sorted: " + Arrays.toString(A));
+       long endTime = System.currentTimeMillis();
+       long timelapsed = endTime - startTime;
+
+       
+       printStatistics("selection2", SortObject.getCompares(), testmoves, timelapsed);
     }
     
 
@@ -462,6 +491,8 @@ public class ComparisonSort {
         insertionSort(temp[1]);
         mergeSort(temp[2]);
         quickSort(temp[3]);
+        heapSort(temp[4]);
+        selection2Sort(temp[5]);
     }
     
     static private void swap(Comparable A, Comparable B) {
@@ -474,14 +505,8 @@ public class ComparisonSort {
    	 E temp = A[left];
    	 A[left] = A[right];
    	 A[right] = temp;
+   	 testmoves+=3;
     }
-    
-    static private void print(String str, int compares, int moves, long timelapsed ) {
-   	 
-   	 String comparesToString = NumberFormat.getNumberInstance(Locale.US).format(compares);
-   	 String movesToString = NumberFormat.getNumberInstance(Locale.US).format(moves);
-   	 String timelapsedToString = NumberFormat.getNumberInstance(Locale.US).format(timelapsed);
-   	 System.out.format("%-23s%15s%15s%15s\n", str, comparesToString, 
-   			 movesToString, timelapsedToString);
-    }
+   
+
 }
