@@ -32,14 +32,14 @@ public class MyPriorityQueue <E extends Comparable<E>> {
    	 //insert the new item as a leaf and then swap the item to the proper 
    	 //place
    	 itemsArray[numItems] = item;
-   	 ComparisonSort.testmoves++;
+   	 ComparisonSort.moves++;
    	 int k = numItems;
    	 while(k > 1) {
    		 if (item.compareTo(itemsArray[k / 2]) > 0) {
    			itemsArray[k] = itemsArray[k/2];
    			itemsArray[k/2] = item;
-   			ComparisonSort.testmoves++;
-   			ComparisonSort.testmoves++;
+   			ComparisonSort.moves++;
+   			ComparisonSort.moves++;
    		 }
    		 k = k / 2;
    	 }
@@ -56,7 +56,7 @@ public class MyPriorityQueue <E extends Comparable<E>> {
   	 itemsArray = (E[])(new Comparable[largerSize]); //new array
   	 for (int i = 1; i < oriArray.length; i++) { //copy items to new array
   		 itemsArray[i] = oriArray[i];
-  		ComparisonSort.testmoves++;
+  		ComparisonSort.moves++;
   	 }
   	 return itemsArray;
   	 
@@ -86,17 +86,17 @@ public class MyPriorityQueue <E extends Comparable<E>> {
   				 largerChild = itemsArray[2*k + 1];
   				 itemsArray[2*k + 1] = itemsArray[k];
   				 itemsArray[k] = largerChild;
-  				ComparisonSort.testmoves++;
-  				ComparisonSort.testmoves++;
-  				ComparisonSort.testmoves++;
+  				ComparisonSort.moves++;
+  				ComparisonSort.moves++;
+  				ComparisonSort.moves++;
   				 k = 2 * k + 1;
   			 } else {
   				 largerChild = itemsArray[2*k];
   				 itemsArray[2*k] = itemsArray[k];
   				 itemsArray[k] = largerChild;
-  				ComparisonSort.testmoves++;
-  				ComparisonSort.testmoves++;
-  				ComparisonSort.testmoves++;
+  				ComparisonSort.moves++;
+  				ComparisonSort.moves++;
+  				ComparisonSort.moves++;
   				 k = 2 * k;
   			 }
   		 } else {

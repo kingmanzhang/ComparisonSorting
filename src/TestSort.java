@@ -17,7 +17,8 @@ public class TestSort {
      */
     public static void main(String[] args) {
    	 
-   	 Integer [] testArray = new Integer[] {5, 8, 2, 4, 7, 1, 9, 10, 60, 0, -2};
+   	 //Integer [] testArray = new Integer[] {5, 8, 2, 4, 7, 1, 9, 10, 60, 0, -2, -100, 500};
+   	 //testArray = new Integer[] {5, 4, 3};
    	 //ComparisonSort.selectionSort(testArray);
    	 //ComparisonSort.insertionSort(testArray);
    	 //ComparisonSort.mergeSort(testArray);
