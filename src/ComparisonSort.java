@@ -536,10 +536,13 @@ public class ComparisonSort {
                           "----------", "------------");
         
 
+        //copy the unsorted array so that identifical array can be sorted with
+        //different algorithms. 
         SortObject[][] temp = new SortObject[7][A.length];
         for (int i = 0; i < 7; i++) {
       	  System.arraycopy(A, 0, temp[i], 0, A.length);
         }
+        //test various sorting algorithms
         selectionSort(temp[0]);
         insertionSort(temp[1]);
         mergeSort(temp[2]);

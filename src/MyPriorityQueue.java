@@ -1,13 +1,22 @@
 
+//////////////////////////// 80 columns wide //////////////////////////////////
+
+/**
+ * This is an implementation of priority queue. Count of data moves is recorded.
+ */
+
 import java.util.NoSuchElementException;
 
 public class MyPriorityQueue <E extends Comparable<E>> {
 	
-	private E[] itemsArray;
-	private int numItems;
-	private final int INIT_LENGTH = 100;
-	private int length;
+	private E[] itemsArray; //implement with an array
+	private int numItems;//number of items
+	private final int INIT_LENGTH = 100;//default size
+	private int length;//defined array size
 	
+	/**
+	 * The default constructor creates an array of default size of items. 
+	 */
 	public MyPriorityQueue () {
 		
 		itemsArray = (E[]) (new Comparable[INIT_LENGTH]);
@@ -15,6 +24,10 @@ public class MyPriorityQueue <E extends Comparable<E>> {
 		
 	}
 	
+	/**
+	 * The constructor creates an array of defined length. 
+	 * @param length: defined length of array
+	 */
 	public MyPriorityQueue (int length) {
 	
 		itemsArray = (E[]) (new Comparable[length]);
@@ -22,6 +35,10 @@ public class MyPriorityQueue <E extends Comparable<E>> {
 		
 	}
 	
+	/**
+	 * Insert an item to the priority queue
+	 * @param item: item to insert
+	 */
 	void insert(E item) {
 		
 		 numItems++;
@@ -62,10 +79,18 @@ public class MyPriorityQueue <E extends Comparable<E>> {
   	 
    }
 	
+   /**
+    * A method to determine whether the priority queue is empty. 
+    * @return true if the priority queue is empty.
+    */
 	boolean isEmpty() {
 		return numItems == 0;
 	}
 	
+	/**
+	 * A method to remove the item of max size. 
+	 * @return: the item of max size. 
+	 */
 	E removeMax() {
 		if(numItems == 0) {
   		 throw new NoSuchElementException();
@@ -108,6 +133,10 @@ public class MyPriorityQueue <E extends Comparable<E>> {
       return max;
 	}
 	
+	/**
+	 * A method to return the size of a queue. 
+	 * @return: number of items in the queue. 
+	 */
 	int size() {
 	   return numItems;	
 	}	
