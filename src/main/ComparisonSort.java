@@ -1,3 +1,4 @@
+package main;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -92,7 +93,7 @@ public class ComparisonSort {
         
         long endTime = System.currentTimeMillis();
         long timelapsed = endTime - startTime;
-        if(A.length > 1000) {
+        if(A.length > 5) {
       	  printStatistics("insertion", SortObject.getCompares(), moves, timelapsed);
         }
     }
@@ -202,7 +203,7 @@ public class ComparisonSort {
      * @param high: ending index
      * @return index where to divide array into two subarrays.
      */
-    private static <E extends Comparable<E>> int partition(E[] A, int low, int high) {
+    protected static <E extends Comparable<E>> int partition(E[] A, int low, int high) {
    	 
    	 E pivot = medianOfThree(A, low, high); 
    	 
@@ -217,13 +218,11 @@ public class ComparisonSort {
    		 }
    		 if(left<=right) {
    			 swap(A, left, right);
-   			 
    			 left++;
    			 right--;
    		 }
    	 }
-   	 swap(A, right + 1, high - 1);
-   	 
+   	 swap(A, left, high - 1);
    	 return right; 
     }
     
@@ -235,15 +234,14 @@ public class ComparisonSort {
      */
     private static <E extends Comparable<E>> void quickSortAux(E[] A, int low, int high) {
  
-   	 if(high - low < 4) {
+   	 if(high - low < 4) { 
    		 insertionSort(A, low, high);
    		 return;
-   	 } else {		 
-   		 int right = partition(A, low, high);
-   		 quickSortAux(A, low, right );
-   		 quickSortAux(A, right + 2, high);
-   		 
-   	 }
+   	 } 
+   	 
+		 int right = partition(A, low, high);
+		 quickSortAux(A, low, right );
+		 quickSortAux(A, right + 2, high);
    	 
     }
     
@@ -253,8 +251,9 @@ public class ComparisonSort {
      * @param low: beginning index of subarray
      * @param high: ending index of subarray
      */
-    private static <E extends Comparable<E>> void insertionSort(E[] A, int low, int high) {
-   	 for (int i = low + 1; i < high - low + 1; i++) {
+    protected static <E extends Comparable<E>> void insertionSort(E[] A, int low, int high) {
+   
+   	 for (int i = low + 1; i < high + 1; i++) {
      	  int k = i - 1; 
      	  E temp = A[i];
      	  while((k >= low) && (A[k].compareTo(temp) > 0)) {
@@ -274,7 +273,8 @@ public class ComparisonSort {
      * @param high: index of an item
      * @return median of three items at index low, high, and middle (of low and high)
      */
-    private static <E extends Comparable<E>> E medianOfThree(E[]A, int low, int high) {
+    protected static <E extends Comparable<E>> E medianOfThree(E[]A, int low, int high) {
+   	 
    	 int median = (low + high) / 2; //item at the middle of low and high
    	 if(A[low].compareTo(A[high]) > 0) {
    		 swap(A, low, high);
@@ -288,8 +288,9 @@ public class ComparisonSort {
    		 swap(A, median, high);
    		 
    	 }
-   	 
-   	 return A[median];
+   	 swap(A, median, high - 1);
+
+   	 return A[high - 1];
     }
 
 
@@ -311,28 +312,64 @@ public class ComparisonSort {
      * @param <E>  the type of values to be sorted
      * @param A    the array to sort
      */
+    
+    
     public static <E extends Comparable<E>> void heapSort(E[] A) {
    	 
-   	  SortObject.resetCompares();//reset count of compares
-		  long startTime = System.currentTimeMillis();//beginning time
-		  moves = 0;//reset moves
-		 
-		  //instantiate a queue; give an explicit number to minimize resizing
-        MyPriorityQueue<E> temp = new MyPriorityQueue<>(5000);
-        for(int i = 0; i < A.length; i++) {
-      	  temp.insert(A[i]);
-      	  
-        }
-        for(int k = A.length - 1; k >= 0; k--) {
-      	  A[k] = temp.removeMax();
-      	  
-        }
-        long endTime = System.currentTimeMillis();
-        long timelapsed = endTime - startTime;
+   	 SortObject.resetCompares();//reset count of compares
+		 long startTime = System.currentTimeMillis();//beginning time
+		 moves = 0;//reset moves
+   	 
+   	 int heapLength = A.length;
+   	 buildHeap(A); //first build a heap 
+   	 for(int i = heapLength - 1; i > 0; i--) { //repeatedly do the following
+   		 swap(A, 0, i); //swap the first (max) with the last
+   		 heapLength--; //the last position is in its final position
+   		 maxHeapify(A, 0, heapLength);//re-establish the heap order
+   	 }
+   	 
+   	 long endTime = System.currentTimeMillis();
+       long timelapsed = endTime - startTime;
 
-        
-        printStatistics("heap", SortObject.getCompares(), moves, timelapsed);
-        
+       
+       printStatistics("heap", SortObject.getCompares(), moves, timelapsed);
+   	 
+    }
+    
+    /**
+     * A helper method to build a heap bottom up. 
+     * @param A: array to be sorted
+     * @param length: length of the array
+     */
+    private static <E extends Comparable<E>> void buildHeap(E[] A) {
+   	 int length = A.length;
+   	 for (int i = length / 2; i >= 0; i--) {
+   		 maxHeapify(A, i, length);
+   	 }
+    }
+    
+    /**
+     * A helper method to establish a heap.
+     * @param A: array to be sorted
+     * @param i: the starting position to establish a heap
+     * @param length: length of the array
+     */
+    private static <E extends Comparable<E>> void maxHeapify(E[] A, int i, int length) {
+   	 int leftChild = 2 * i + 1; 
+   	 int rightChild = 2 * i + 2; 
+   	 int largest = i;
+   	 //find the largest child and switch if the largest child is larger
+   	 if(leftChild < length && A[leftChild].compareTo(A[i]) > 0) {
+   		 largest = leftChild;
+   	 }
+   	 if(rightChild < length && A[rightChild].compareTo(A[largest]) > 0) {
+   		 largest = rightChild;
+   	 }
+   	 if(largest != i) {
+   		 swap(A, i, largest);
+   		 maxHeapify(A, largest, length);
+   	 }
+   	 
     }
 
     /**
