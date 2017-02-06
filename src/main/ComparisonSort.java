@@ -527,6 +527,34 @@ public class ComparisonSort {
     public static <E extends Comparable<E>> void insertion2Sort(E[] A) { 
         // TODO: implement this sorting algorithm 
     }
+    
+    /**
+     * Bubble sort
+     * @param A: array to sort
+     */
+    
+    public static <E extends Comparable<E>> void bubbleSort(E[] A) {
+   	 
+   	 SortObject.resetCompares();
+		 long startTime = System.currentTimeMillis();
+		 moves = 0;
+   	 
+   	 int N = A.length;
+   	 for (int i = N - 1; i > 0; i--) {
+   		 for(int j = 0; j < i ; j++) {
+   			 if(A[j].compareTo(A[j + 1]) > 0) {
+   				 swap(A, j, j + 1);
+   			 }
+   		 }
+   	 }
+   	 
+   	 
+   	 long endTime = System.currentTimeMillis();
+       long timelapsed = endTime - startTime;
+
+       
+       printStatistics("bubble", SortObject.getCompares(), moves, timelapsed);
+    }
 
     /**
      * Internal helper for printing rows of the output table.
@@ -586,6 +614,7 @@ public class ComparisonSort {
         quickSort(temp[3]);
         heapSort(temp[4]);
         selection2Sort(temp[5]);
+        bubbleSort(temp[6]);
     }
     
 

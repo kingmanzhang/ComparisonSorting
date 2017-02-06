@@ -47,8 +47,6 @@ public class ComparisonSortTest {
 		Integer [] testArray = 
 				new Integer[] {5, 8, 2, 4, 7, 1, 9, 10, 60, 0, -2, -100, 500};
 		ComparisonSort.quickSort(testArray);
-	  	
-	  	System.out.println("final \n" + Arrays.toString(testArray));
 	  	Integer[] result = 
 	  			new Integer[] {-100, -2, 0, 1, 2, 4, 5, 7, 8, 9, 10, 60, 500};
 		assertArrayEquals(result, testArray);
@@ -92,6 +90,15 @@ public class ComparisonSortTest {
 		Integer [] testArray = 
 				  new Integer[] {5, 8, 2, 4, 7, 1, 9, 10, 60, 0, -2, -100, 500};
 	  	ComparisonSort.selection2Sort(testArray);
+	  	Integer[] result = new Integer[] {-100, -2, 0, 1, 2, 4, 5, 7, 8, 9, 10, 60, 500};
+		assertArrayEquals(result, testArray);
+	}
+	
+	@Test
+	public void testBubbleSort() {
+		Integer [] testArray = 
+				  new Integer[] {5, 8, 2, 4, 7, 1, 9, 10, 60, 0, -2, -100, 500};
+	  	ComparisonSort.bubbleSort(testArray);
 	  	Integer[] result = new Integer[] {-100, -2, 0, 1, 2, 4, 5, 7, 8, 9, 10, 60, 500};
 		assertArrayEquals(result, testArray);
 	}
